@@ -62,7 +62,7 @@ Crie um arquivo `.env` na raiz da pasta `backend/` com o seguinte conteúdo (aju
 DB_HOST=localhost
 DB_USER=root
 DB_PASSWORD=senha_do_mysql
-DB_NAME=perfil_usuario
+DB_NAME=seu_nome
 PORT=3000
 ```
 
