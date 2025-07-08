@@ -136,6 +136,13 @@ npm run dev
 
 Acesse: [http://localhost:5173](http://localhost:5173)
 
+### 5. Navegação (inclua na URL)
+
+- `/perfil` → Página que exibe os dados do usuário
+- `/editar` → Página que permite editar os dados
+
+---
+
 Funcionalidades atuais:
 
 - Tela de **Perfil do Usuário**
@@ -154,13 +161,6 @@ Funcionalidades atuais:
 | Backend   | Node.js, Express, MySQL, dotenv |
 | Frontend  | React, React Router, Axios      |
 | Outros    | Vite, VS Code, Postman          |
-
----
-
-## 🧭 Navegação
-
-- `/perfil` → Página que exibe os dados do usuário
-- `/editar` → Página que permite editar os dados
 
 ---
 
