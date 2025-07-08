@@ -64,7 +64,11 @@ Na pasta `backend/`, crie um arquivo `.env` com:
 DB_HOST=localhost
 DB_USER=root
 DB_PASSWORD=senha_do_mysql
+<<<<<<< HEAD
 DB_NAME=case_sync360
+=======
+DB_NAME=seu_nome
+>>>>>>> a0558fdb757754d9811f77f8a1bfd4dec0e052c5
 PORT=3000
 ```
 
