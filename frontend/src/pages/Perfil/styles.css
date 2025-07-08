@@ -1,0 +1,50 @@
+.perfil-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+  background: #f7f9fc;
+}
+
+.card-perfil {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+}
+
+.imagem-perfil {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1rem;
+  border: 2px solid #ccc;
+}
+
+.btn-editar {
+  background-color: #4f46e5;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  margin-top: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-editar:hover {
+  background-color: #3730a3;
+}
+
+.carregando {
+  text-align: center;
+  padding-top: 3rem;
+  font-size: 1.2rem;
+  color: #555;
+}

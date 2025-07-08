@@ -1,46 +1,50 @@
+// src/pages/Perfil/Perfil.jsx
 import React, { useEffect, useState } from "react";
-import "./styles.css";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
+import "./styles.css";
 
 function Perfil() {
   const [usuario, setUsuario] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    async function carregarDadosUsuario() {
+    async function buscarUsuario() {
       try {
         const res = await api.get("/usuario");
-        setUsuario(res.data);
-      } catch (error) {
-        console.error("Erro ao carregar os dados do usuário:", error);
+        if (!res.data || !res.data.nome) {
+          navigate("/editar");
+        } else {
+          setUsuario(res.data);
+        }
+      } catch (err) {
+        console.error("Erro ao buscar usuário:", err);
+        navigate("/editar");
       }
     }
 
-    carregarDadosUsuario();
+    buscarUsuario();
   }, []);
 
-  if (!usuario || !usuario.nome) {
-    return <p>Carregando perfil...</p>;
-  }
+  if (!usuario) return <p className="carregando">Carregando perfil...</p>;
 
   return (
-    <div className="container">
-      <img src={usuario.imagemPerfil} alt="Foto de perfil do usuario" />
-      <h1>{usuario.nome}</h1>
-      <p>
-        <strong>Idade:</strong> {usuario.idade}
-      </p>
-      <p>
-        <strong>Endereço:</strong> {usuario.rua}, {usuario.bairro},{" "}
-        {usuario.estado}
-      </p>
-      <p>
-        <strong>Biografia:</strong> {usuario.biografia}
-      </p>
+    <div className="perfil-container">
+      <div className="card-perfil">
+        {usuario.imagemPerfil && (
+          <img
+            src={`http://localhost:3000/uploads/${usuario.imagemPerfil}`}
+            alt="Foto de perfil"
+            className="imagem-perfil"
+          />
+        )}
+        <h1>{usuario.nome}</h1>
+        <p><strong>Idade:</strong> {usuario.idade}</p>
+        <p><strong>Endereço:</strong> {usuario.rua}, {usuario.bairro}, {usuario.estado}</p>
+        <p><strong>Biografia:</strong> {usuario.biografia}</p>
 
-      <Link to="/editar">
-        <button>Editar Perfil</button>
-      </Link>
+        <button className="btn-editar" onClick={() => navigate("/editar")}>Editar Perfil</button>
+      </div>
     </div>
   );
 }

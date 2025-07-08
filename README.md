@@ -172,7 +172,7 @@ Desenvolvido por **Ailton Rodrigues** como parte do desafio técnico da empresa 
 
 ## 📌 Próximos Passos
 
-- [ ] Estilizar a aplicação com TailwindCSS ou CSS Modules
+- [ ] Estilizar a aplicação com CSS Modules
 - [ ] Tornar totalmente responsivo (mobile e desktop)
 - [ ] Realizar deploy:
   - Backend (Render ou Railway)

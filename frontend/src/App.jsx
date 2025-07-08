@@ -1,7 +1,6 @@
 import React from "react";
-import "./styles.css";
 import Perfil  from "../src/pages/Perfil/Perfil"
-import EditarPerfil from "./pages/EditaPerfil/EditarPerfil";
+import EditarPerfil from "./pages/EditarPerfil/EditarPerfil";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 

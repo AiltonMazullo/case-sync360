@@ -1,13 +1,30 @@
 const express = require("express");
 const cors = require("cors");
 const mysql = require("mysql2");
+const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
 require("dotenv").config();
 
 const app = express();
-app.use(express.json());
 app.use(cors());
 
-// Conexão com o MySQL
+const uploadDir = path.join(__dirname, "uploads");
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir);
+}
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, "uploads/"),
+  filename: (req, file, cb) => {
+    const uniqueName = Date.now() + "-" + Math.round(Math.random() * 1e9) + path.extname(file.originalname);
+    cb(null, uniqueName);
+  },
+});
+const upload = multer({ storage });
+
+app.use("/uploads", express.static("uploads"));
+
 const db = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
@@ -15,7 +32,6 @@ const db = mysql.createConnection({
   database: process.env.DB_NAME,
 });
 
-// Testar conexão com o MySQL
 db.connect((err) => {
   if (err) {
     console.error("Erro ao conectar ao MySQL:", err);
@@ -24,24 +40,18 @@ db.connect((err) => {
   }
 });
 
-// ROTA GET /usuario
+// GET /usuario
 app.get("/usuario", (req, res) => {
   db.query("SELECT * FROM usuario LIMIT 1", (err, results) => {
-    console.log("Erro:", err);
-    console.log("Resultado:", results);
-    if (err) {
-      res.status(500).json({ erro: "Erro ao buscar usuário" });
-    } else {
-      res.json(results[0] || {});
-    }
+    if (err) return res.status(500).json({ erro: "Erro ao buscar usuário" });
+    res.json(results[0] || {});
   });
 });
 
-
-// ROTA POST /usuario
-app.post("/usuario", (req, res) => {
-  console.log("req.body recebido:", req.body)
-  const { nome, idade, rua, bairro, estado, biografia, imagemPerfil } = req.body;
+// POST /usuario 
+app.post("/usuario", upload.single("imagemPerfil"), (req, res) => {
+  const { nome, idade, rua, bairro, estado, biografia, imagemPerfilUrl } = req.body;
+  const imagemPerfil = req.file ? req.file.filename : imagemPerfilUrl || null;
 
   const sql = `
     INSERT INTO usuario (nome, idade, rua, bairro, estado, biografia, imagemPerfil)
@@ -58,17 +68,15 @@ app.post("/usuario", (req, res) => {
 
   const values = [nome, idade, rua, bairro, estado, biografia, imagemPerfil];
 
-  db.query(sql, values, (err, result) => {
+  db.query(sql, values, (err) => {
     if (err) {
       console.error("Erro ao salvar usuário:", err);
-      res.status(500).json({ erro: "Erro ao salvar dados do usuário" });
-    } else {
-      res.json({ mensagem: "Usuário salvo com sucesso!" });
+      return res.status(500).json({ erro: "Erro ao salvar dados do usuário" });
     }
+    res.json({ mensagem: "Usuário salvo com sucesso!" });
   });
 });
 
-// Iniciar o servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
